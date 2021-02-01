@@ -187,6 +187,28 @@ void deleteNumber(string number){
 
 
 }
+void deleteAllNumbers(){
+    
+    string line;
+    ifstream arquivo;
+    arquivo.open("listOfNumbers.txt");
+    ofstream temp;
+    temp.open("temp.txt");
+    while (getline(arquivo, line))
+    {
+        if (line == ""){
+            temp << line << endl;
+        }
+    }
+    cout << "All numbers have been deleted " << endl;
+    arquivo.close();
+    temp.close();
+    remove("listOfNumbers.txt");
+    rename("temp.txt", "listOfNumbers.txt");
+
+
+}
+
 
 void menu(){
 
@@ -196,10 +218,10 @@ void menu(){
     int x=0;
     int i;
     char strI [20];
-    while(i!=8){
+    while(i!=9){
         cout << "\n CHOOSE AN OPTION \n" << "------------------------------------ " << endl;
         cout<< "Enter 1 to add a number to the list \nEnter 2 to update a number in the list \nEnter 3 to see all numbers in the list \nEnter 4 to see a number in the list \n" 
-        << "Enter 5 to delete a number from the list \nEnter 6 to see the quantity in the list numbers \nEnter 7 to see the quantity in the letters of the file\nEnter 8 to close program "<< endl;
+        << "Enter 5 to delete a number from the list \nEnter 6 to see the quantity in the list numbers \nEnter 7 to see the quantity in the letters of the file\nEnter 8 to delete all numbers of the file\nEnter 9 to close program "<< endl;
         gets(strI);
 		i=atoi(strI);  
         
@@ -265,13 +287,20 @@ void menu(){
             cin.get();
             
             break;
+        case 8:
+            system("clear");
+            cout << "Delete all numbers in the list: \n";
+            deleteAllNumbers();
+            cin.get();
+            
+            break;
         default:
-            if(i>8 ){
+            if(i>9 ){
                 cout << "No option chosen \n";
                 break;
             }
         }
-        if(i==8){
+        if(i==9){
 	    cout << "The program has ended \n";
     }
         
@@ -282,8 +311,8 @@ void menu(){
 }
 
 int main(){
-    
     menu();
+    //deleteAllNumbers();
     //getOneNumber("207");
     //addNumbers("");
     //updateNumber("444","2000");
