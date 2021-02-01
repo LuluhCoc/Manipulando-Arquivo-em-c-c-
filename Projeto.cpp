@@ -8,19 +8,7 @@
 
 using namespace std;
 
-void getAllNumbers() {
-    ifstream arquivo;
-    string line;
-    arquivo.open("listOfNumbers.txt");
 
-    if (arquivo.is_open()) {
-        while (getline(arquivo, line))
-        {
-            cout << line << endl;
-        }
-        arquivo.close();
-    }
-}
 
 string getOneNumber(string number) {
     ifstream arquivo;
@@ -58,7 +46,7 @@ bool verifyNumber(string number){
     if(strlen(array)== 0){
         arquivo.close();
         cout << "number empty" << endl;
-        return false;
+        return true;
     }else{
         arquivo.open("listOfNumbers.txt");
     }
@@ -69,7 +57,7 @@ bool verifyNumber(string number){
         {
             if (number.compare(line) == 0) {
                 arquivo.close();
-                
+                cout << "Number already exist" << endl;
                 return true;
             }
         }
@@ -87,11 +75,8 @@ void addNumbers(string number){
         arquivo << number + "\n";
         arquivo.close();
         cout << "Number add successfully" << endl;
-    } else {
-        cout << "Number already exist" << endl;
-    }
-
-    
+    }  
+        
 }
 
 string updateNumber(string number, string newNumber) {
@@ -136,22 +121,50 @@ int amountLetters() {
              vezes++;
         }
     } 
-    cout << "\nNumero de registros : " << vezes; 
+    cout << "\nNumber of letters : " << vezes; 
     return vezes;
 
 }
 
-void amountNumbers(){
+int amountNumbers(){
     ifstream arquivo;
 
     arquivo.open("listOfNumbers.txt");
 
     arquivo.seekg(0,ios::end); 
     long nrec = (arquivo.tellg( ))/sizeof(amountLetters());
-    cout << "\nNumero de registros : " << nrec; 
     cout << "\n ";
     arquivo.close();
+    return nrec;
+
 }
+
+string* getAllNumbers() {
+    ifstream arquivo;
+    string line;
+
+    int qtdLines = amountNumbers();
+    string* numbers = new string[qtdLines];
+    
+    arquivo.open("listOfNumbers.txt");
+    int i=0;
+  
+    if (arquivo.is_open()) {
+        while (getline(arquivo,line))
+        {
+            //cout << line << endl;
+            numbers[i] = line;
+            i++;
+
+        }
+        arquivo.close();
+       
+        return numbers;
+        
+       
+    }
+}
+
 
 void deleteNumber(string number){
     
@@ -176,78 +189,107 @@ void deleteNumber(string number){
 }
 
 void menu(){
+
     string number;
     string newNumber;
+    string* list ;
+    int x=0;
     int i;
     char strI [20];
     while(i!=8){
-        system("clear");
-        cout << "\n ESCOLHA UMA OPÇÂO \n" << "------------------------------------ " << endl;
+        cout << "\n CHOOSE AN OPTION \n" << "------------------------------------ " << endl;
         cout<< "Enter 1 to add a number to the list \nEnter 2 to update a number in the list \nEnter 3 to see all numbers in the list \nEnter 4 to see a number in the list \n" 
-        << "Enter 5 to delete a number from the list \nEnter 6 to see the quantity in the list numbers \nEnter 7 to see the quantity in the letters of the list\nEnter 8 to close program "<< endl;
+        << "Enter 5 to delete a number from the list \nEnter 6 to see the quantity in the list numbers \nEnter 7 to see the quantity in the letters of the file\nEnter 8 to close program "<< endl;
         gets(strI);
-		i=atoi(strI);    
+		i=atoi(strI);  
+        
         switch (i) {
         case 1:
+            system("clear");
             cout << "Add a number in the list: \n";
             cin >> number;
             addNumbers(number);
+            cin.get();
+            
             break;
         case 2:
+            system("clear");
             cout << "update a number in the list: \n";
-            cout << "Type the number current: ";
+            cout << "Enter the number current: ";
             cin >> number;
-            cout << "Type the number new: ";
+            cout << "Enter the number new: ";
             cin >> newNumber;
             updateNumber(number,newNumber);
+            cin.get();
+            
             break;
         case 3:
+            system("clear");
             cout << "Consult all number in the list: \n";
-            getAllNumbers();
+            cout << "\nAmount of numbers : " << amountNumbers() << endl; 
+            list = getAllNumbers();
+            x = amountNumbers();
+            for (int c = 0; c < x; c++) {
+                cout << list[c] << endl;
+            }
+            cin.get();
             break;
+
         case 4:
+            system("clear");
             cout << "Consult a number in the list by number: \n";
             cin >> number;
             getOneNumber(number);
+            cin.get();
+            
             break;
         case 5:
+             system("clear");
             cout << "Delete a number in the list: \n";
             cin >> number;
-            deleteNumber("222");
+            deleteNumber(number);
+            cin.get();
+           
             break;
         case 6:
+            system("clear");
             cout << "Consult amount in the list numbers: \n";
-            amountNumbers();
+            cout << "\nAmount of numbers : " << amountNumbers() << endl;
+            cin.get();
+           
             break;
         case 7:
+            system("clear");
             cout << "Consult amount in the list letters: \n";
             amountLetters();
+            cin.get();
+            
             break;
-        case 8:
-            cout << "Você decidiu sair \n";
-            break;
+        default:
+            if(i>8 ){
+                cout << "No option chosen \n";
+                break;
+            }
         }
-        if(i>8){
-            cout << " nenhum Opção escolhida \n";
-            system("clear");
-        }
-        if(i<=0)
-		{
-			 
-			cout << "Nenhum Opção escolhida! \n";
-            system("clear");
-		}  
+        if(i==8){
+	    cout << "The program has ended \n";
+    }
+        
         
     }
+    
+
 }
+
 int main(){
+    
     menu();
     //getOneNumber("207");
-    //addNumbers("444");
+    //addNumbers("");
     //updateNumber("444","2000");
     //amountNumbers();
     //amountLetters();
-    //deleteNumber("222");
+    //deleteNumber("");
     //getAllNumbers();
     return 0;
 }
