@@ -8,8 +8,6 @@
 
 using namespace std;
 
-
-
 string getOneNumber(string number) {
     ifstream arquivo;
     string line;
@@ -34,23 +32,29 @@ string getOneNumber(string number) {
 }
 
 
-
 bool verifyNumber(string number){
     ifstream arquivo;
     string line;
-
-
+    int i=0;
     char array[1024];
     strcpy(array, number.c_str());
-
+ 
     if(strlen(array)== 0){
+        
         arquivo.close();
         cout << "number empty" << endl;
         return true;
     }else{
-        arquivo.open("listOfNumbers.txt");
+        while(array[i] != 0){
+            if(array[i]<'0' || array[i]>'9' || strlen(array) >15 || strlen(array)<4 ){
+                cout << "Enter with a number valid" << endl;
+                return true;
+            }
+            i++;
+        }  
+        arquivo.open("listOfNumbers.txt"); 
     }
-    
+
     if (arquivo.is_open()) {
         
         while (getline(arquivo, line))
